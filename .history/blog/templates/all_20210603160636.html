@@ -1,0 +1,71 @@
+<!-- 
+* A l'attention de David R. : NON je n'ai pas découpé en fichier css ou js, pas la peine de faire la réflexion!
+-->
+
+<style>
+    #id_radio:checked~.title_box {
+        display: none;
+    }
+
+    #title_radio:checked~.id_box {
+        display: none;
+    }
+</style>
+
+<h4><b>{{ articles_view_title }}</b></h4>
+<input type="radio" id="id_radio" name="search_selector" value="Id" checked><label for="id_radio"> Identifiant
+</label></input>
+<input type="radio" id="title_radio" name="search_selector" value="Title"><label for="title_radio"> Titre
+</label></input>
+<br>
+<span class="id_box">Rechercher par id: </span><input type="text" pattern="\d*" id="id_box" class="id_box search_box">
+<span class="title_box">Rechercher par titre: </span><input type="text" id="title_box" class="title_box search_box">
+
+<div class="list" id="articles_block">
+    {% include "view_all_content.html" %}
+</div>
+
+{% csrf_token %}
+<script type="text/javascript">
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    const search_boxes = document.getElementsByClassName("search_box")
+    const block_list = document.getElementById('articles_block')
+
+    const inputHandler = function (e) {
+        type_search = document.getElementById('id_radio').checked;
+
+        if (type_search) {
+            filter_url = "filter_id";
+            value = document.getElementById("id_box").value;
+        }
+        else {
+            filter_url = "filter_title";
+            value = document.getElementById("title_box").value;
+
+            if (value.length < 3) {
+                value = "";
+            }
+
+        }
+
+        request = new Request(
+            '/articles/' + filter_url + '/' + value,
+            { headers: { 'X-CSRFToken': csrftoken } }
+        );
+
+        fetch(request)
+            .then(res => {
+                if (res.ok) {
+                    return res.text();
+                } else {
+                    return Promise.reject(res.status);
+                }
+            })
+            .then(res => block_list.innerHTML = res)
+            .catch(err => console.log(`Erreur avec le message : ${err}`));
+    }
+
+    Array.prototype.forEach.call(search_boxes, function (search_box) { search_box.addEventListener('input', inputHandler) });
+
+</script>

@@ -1,0 +1,51 @@
+<!-- 
+* A l'attention de David R. : NON je n'ai pas découpé en fichier css ou js, pas la peine de faire la réflexion!
+-->
+
+<style>
+    #id_radio:checked~.title_box {
+        display: none;
+    }
+
+    #title_radio:checked~.id_box {
+        display: none;
+    }
+</style>
+
+<span class="title_box">Rechercher par titre: </span>
+<input type="text" id="title_box" class="title_box search_box">
+
+<div class="list" id="articles_block">
+    {% include "detail_article.html" %}
+</div>
+
+<script type="text/javascript">
+    console.log('pass')
+    const search_boxes = document.getElementsByName('search_box')
+    const block_list = document.getElementById('articles_block')
+
+    const inputHandler = function (e) {
+        console.log('function')
+        value = document.getElementById("title_box").value;
+        
+        request = new Request(
+            '/search_article/' + value
+        );
+
+        fetch(request)
+            .then(res => {
+                if (res.ok) {
+                    console.log('ok')
+                    return res.text();
+                } else {
+                    console.log('error')
+                    return Promise.reject(res.status);
+                }
+            })
+            .then(res => block_list.innerHTML = res)
+            .catch(err => console.log(`Erreur avec le message : ${err}`));
+    }
+
+    Array.prototype.forEach.call(search_boxes, function (search_box) { search_box.addEventListener('input', inputHandler) });
+
+</script>

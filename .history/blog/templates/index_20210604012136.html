@@ -1,0 +1,81 @@
+{% extends "base.html" %} 
+{% block content %}
+<style>
+    body {
+        font-family: "Roboto", sans-serif;
+        font-size: 18px;
+        background-color: #fdfdfd;
+    }
+    
+    .head_text {
+        color: white;
+    }
+    
+    .card {
+        box-shadow: 0 16px 48px #E3E7EB;
+    }
+
+    #id_radio:checked~.title_box {
+        display: none;
+    }
+
+    #title_radio:checked~.id_box {
+        display: none;
+    }
+</style>
+<header class="masthead">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class=" col-md-8 col-md-10">
+                <div class="site-heading">
+                    <h3 class=" site-heading my-4 mt-3 text-white"> Welcome to my awesome Blog </h3>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container">
+    <!-- <span class="title_box">Rechercher par titre: </span> -->
+    <!-- <input type="text" id="title_box" class="title_box search_box"> -->
+    <div class="row">
+        <!-- Blog Entries Column -->
+        <input type="text" class="form-control col-sm-2 title_box search_box" id="title_box" aria-describedby="emailHelp">
+        <div id="articles_block" class="col-md-8 mt-3 left">
+            {% include "detail_article.html" %}
+        </div>
+        {% block sidebar %} {% include 'sidebar.html' %} {% endblock sidebar %}
+    </div>
+</div>
+<script type="text/javascript">
+    const search_boxes = document.getElementsByClassName('search_box')
+    const block_list = document.getElementById('articles_block')
+    console.log('pass');
+    const inputHandler = function (e) {
+        console.log('function');
+        value = document.getElementById("title_box").value;
+        
+        console.log('value: ' + value)
+        request = new Request(
+            '/search_article/' + value
+        );
+
+        fetch(request)
+            .then(res => {
+                if (res.ok) {
+                    console.log('ok')
+                    return res.text();
+                } else {
+                    console.log('error')
+                    return Promise.reject(res.status);
+                }
+            })
+            .then(res => block_list.innerHTML = res)
+            .catch(err => console.log(`Erreur avec le message : ${err}`));
+    }
+
+    Array.prototype.forEach.call(search_boxes, function (search_box) { search_box.addEventListener('input', inputHandler) });
+
+</script>
+{%endblock%}

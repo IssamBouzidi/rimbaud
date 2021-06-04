@@ -1,0 +1,6 @@
+<ul>
+    {# loop through articles and render them in list#}
+    {% for article in articles %}
+    <li><a href="/articles/{{ article.id }}" target="_blank">({{article.id}}) - {{ article.title }}</a></li>
+    {% endfor %}
+</ul>

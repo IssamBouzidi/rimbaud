@@ -1,0 +1,14 @@
+<ul>
+    <li><input type="text" class="form-control title_box search_box" id="title_box" aria-describedby="emailHelp"></li>
+    {% for article in articles %}
+    <div class="card mb-4">
+        <div class="card-body">
+            <h2 class="card-title">{{ article.title }}</h2>
+            <h4 class="card-title">{{ article.description }}</h4>
+            <p class="card-text text-muted h6">Date limite de parition | {{ article.visibility_date_limit}} </p>
+            <p class="card-text">{{article.article|slice:":200" }}</p>
+            <a href="/article/{{ article.id }}" class="btn btn-primary">Read more...</a>
+        </div>
+    </div>
+    {% endfor %}
+</ul>

@@ -1,0 +1,22 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item active" aria-current="page">
+        <a href="{% url 'home' %}">Posts</a>
+      </li>
+    </ol>
+  </nav>
+    <div class="row">
+    <div class="col-md-8 card mb-4  mt-3 left  top">
+      <div class="card-body">
+        <h1>{% block title %} {{ article.title }} {% endblock title %}</h1>
+        <p class=" text-muted">{{ article.description }} (fin: {{ article.visibility_date_limit |date:"d M, Y" }})</p>
+        <p class="card-text ">{{ article.article | safe }}</p>
+      </div>
+    </div>
+    {% block sidebar %} {% include 'sidebar.html' %} {% endblock sidebar %}
+  </div>
+</div>
+
+{% endblock content %}
