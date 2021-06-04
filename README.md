@@ -5,7 +5,7 @@ Le site permet à un écrivain de créer des articles en texte uniquement à l'a
 ## Quick Start  
 Pour lancer ce projet localement sur votre ordinateur :  
 1. Configurez l'environnement de développement Python.  
-2. En supposant que vous ayez configuré Python, exécutez les commandes suivantes:  
+2. Exécutez les commandes suivantes:  
 ```
 pip3 install -r requirements.txt
 python manage.py makemigrations
