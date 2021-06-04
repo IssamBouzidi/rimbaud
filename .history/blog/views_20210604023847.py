@@ -13,14 +13,14 @@ def get_all(request):
     return render(request, "index.html", articles_list)
 
 
-@csrf_protect
+
 def get_article(request, id: str):
     print(f'id: {id.__class__.__name__}')
     query = (__find_articles_query(request.user.is_superuser).filter(id=id).first())
     article = {"article": query}
     return render(request, "post_detail.html", article)
 
-@csrf_protect
+
 def search_article(request, title: str = None):
     if title is None:
         query = __find_articles_query(request.user.is_superuser)

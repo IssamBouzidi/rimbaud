@@ -44,16 +44,15 @@
 </div>
 {% csrf_token %}
 <script type="text/javascript">
-    search_fields = document.getElementsByClassName('search_field');
-    articles_zone = document.getElementById('articles_zone');
+    search_fields = document.getElementsByClassName('search_field')
+    articles_zone = document.getElementById('articles_zone')
     csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
+    
     inputHandler = function (e) {
         console.log('function');
         value = document.getElementById("title").value;
         request = new Request(
-            '/search_article/' + value,
-            { headers: { 'X-CSRFToken': csrftoken } }
+            '/search_article/' + value
         );
 
         fetch(request)

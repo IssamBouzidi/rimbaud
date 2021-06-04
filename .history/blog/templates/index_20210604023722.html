@@ -52,8 +52,7 @@
         console.log('function');
         value = document.getElementById("title").value;
         request = new Request(
-            '/search_article/' + value,
-            { headers: { 'X-CSRFToken': csrftoken } }
+            '/search_article/' + value
         );
 
         fetch(request)
